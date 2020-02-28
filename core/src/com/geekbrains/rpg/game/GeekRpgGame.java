@@ -45,8 +45,8 @@ public class GeekRpgGame extends ApplicationAdapter {
 		if (Gdx.input.justTouched()){
 			pointerPosition.set(Gdx.input.getX(), 720 - Gdx.input.getY());
 		}
-		
-		hero.update(dt, pointerPosition);
+
+		hero.update(dt);
 	}
 
 	public void drawGrass(){
