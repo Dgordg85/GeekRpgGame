@@ -4,24 +4,26 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public class GeekRpgGame extends ApplicationAdapter {
 	private SpriteBatch batch;
+	private BitmapFont font32;
+	private TextureAtlas atlas;
 	private Hero hero;
-	private Texture textureGrass;
-	private Texture texturePointer;
-	private Vector2 pointerPosition;
-	private float rt;
-	
+	private TextureRegion textureGrass;
+
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		hero = new Hero();
-		textureGrass = new Texture("grass.jpg");
-		texturePointer = new Texture("pointer.png");
-		pointerPosition = new Vector2(0,0);
+		this.batch = new SpriteBatch();
+		this.atlas = new TextureAtlas("game.pack");
+		this.hero = new Hero(atlas);
+		this.textureGrass = atlas.findRegion("grass");
+		this.font32 = new BitmapFont(Gdx.files.internal("font32.fnt"));
 	}
 
 	@Override
@@ -34,25 +36,19 @@ public class GeekRpgGame extends ApplicationAdapter {
 
 		batch.begin();
 		drawGrass();
-		batch.draw(texturePointer, pointerPosition.x - 32, pointerPosition.y - 32, 32,32, 64, 64, 1, 1, rt, 0, 0,64,64, false, false);
 		hero.render(batch);
+		hero.renderGUI(batch, font32);
 		batch.end();
 	}
 
 	public void update(float dt){
-		rt -= dt * 90;
-
-		if (Gdx.input.justTouched()){
-			pointerPosition.set(Gdx.input.getX(), 720 - Gdx.input.getY());
-		}
-
-		hero.update(dt, pointerPosition);
+		hero.update(dt);
 	}
 
 	public void drawGrass(){
 		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 5; j++) {
-				this.batch.draw(textureGrass, i * 150, j * 150);
+			for (int j = 0; j < 6; j++) {
+				this.batch.draw(textureGrass, i * 128, j * 128);
 			}
 		}
 	}
@@ -61,6 +57,4 @@ public class GeekRpgGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 	}
-
-
 }
