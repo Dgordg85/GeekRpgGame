@@ -21,6 +21,7 @@ public class Hero {
     private float speed;
     private int hp;
     private int hpMax;
+    private int countApples;
     private StringBuilder strBuilder;
 
     public Hero(TextureAtlas atlas) {
@@ -34,6 +35,7 @@ public class Hero {
         this.speed = 300.0f;
         this.hpMax = 10;
         this.hp = 5;
+        this.countApples = 0;
         this.strBuilder = new StringBuilder();
     }
 
@@ -48,13 +50,14 @@ public class Hero {
         strBuilder.setLength(0);
         strBuilder.append("Class: ").append("Knight").append("\n");
         strBuilder.append("HP: ").append(hp).append(" / ").append(hpMax).append("\n");
+        strBuilder.append("Count apples: ").append(countApples).append("\n");
         font.draw(batch, strBuilder, 10, 710);
-        font.draw(batch, "X", position.x, position.y);
+        //font.draw(batch, "X", position.x, position.y);
 
     }
 
-    public void update(float dt){
-        projectile.update(dt);
+    public void update(float dt, Apple apple){
+        projectile.update(dt, apple, this);
         lifetime += dt;
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
             dst.set(Gdx.input.getX(), 720 - Gdx.input.getY());
@@ -67,20 +70,9 @@ public class Hero {
             position.mulAdd(tmp, dt);
         else
             position.set(dst);
-//        if (position.x > dst.x){
-//            position.x -= speed * dt;
-//        }
-//
-//        if (position.x < dst.x){
-//            position.x += speed * dt;
-//        }
-//
-//        if (position.y > dst.y){
-//            position.y -= speed * dt;
-//        }
-//
-//        if (position.y < dst.y){
-//            position.y += speed * dt;
-//        }
+    }
+
+    public void hitApple() {
+        this.countApples += 1;
     }
 }

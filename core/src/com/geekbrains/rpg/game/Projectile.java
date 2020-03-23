@@ -9,14 +9,12 @@ public class Projectile {
     private TextureRegion textureRegion;
     private Vector2 position;
     private Vector2 velocity;
-    private Vector2 tmp;
     private boolean active;
 
     public Projectile(TextureAtlas atlas){
         this.textureRegion = atlas.findRegion("arrow");
         this.position = new Vector2(0,0);
         this.velocity = new Vector2(0,0);
-        this.tmp = new Vector2(0,0);
         this.active = false;
     }
 
@@ -37,11 +35,18 @@ public class Projectile {
             batch.draw(textureRegion, position.x - 30, position.y - 30, 30, 30, 60, 60, 1, 1, velocity.angle());
     }
 
-    public void update(float dt){
+    public void update(float dt, Apple apple, Hero hero){
         if (active){
             position.mulAdd(velocity, dt);
-            if (position.x < 0 || position.x > 1280 || position.y < 0 || position.y > 720){
-                deactivate();
+            if (position.x < 0 || position.x > 1280 || position.y < 0 || position.y > 720)
+                this.deactivate();
+        }
+
+        if (apple.getActive()){
+            if (position.dst(apple.getPosition()) < 13){
+                hero.hitApple();
+                apple.deactivate();
+                this.deactivate();
             }
         }
     }

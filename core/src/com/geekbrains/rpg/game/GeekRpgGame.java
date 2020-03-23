@@ -16,6 +16,7 @@ public class GeekRpgGame extends ApplicationAdapter {
 	private TextureAtlas atlas;
 	private Hero hero;
 	private TextureRegion textureGrass;
+	private Apple apple;
 
 	@Override
 	public void create () {
@@ -23,6 +24,7 @@ public class GeekRpgGame extends ApplicationAdapter {
 		this.atlas = new TextureAtlas("game.pack");
 		this.hero = new Hero(atlas);
 		this.textureGrass = atlas.findRegion("grass");
+		this.apple = new Apple(atlas);
 		this.font32 = new BitmapFont(Gdx.files.internal("font32.fnt"));
 	}
 
@@ -36,13 +38,15 @@ public class GeekRpgGame extends ApplicationAdapter {
 
 		batch.begin();
 		drawGrass();
+		apple.render(batch);
 		hero.render(batch);
 		hero.renderGUI(batch, font32);
 		batch.end();
 	}
 
 	public void update(float dt){
-		hero.update(dt);
+		hero.update(dt, apple);
+		apple.update(dt);
 	}
 
 	public void drawGrass(){
