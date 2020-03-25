@@ -35,19 +35,15 @@ public class Projectile {
             batch.draw(textureRegion, position.x - 30, position.y - 30, 30, 30, 60, 60, 1, 1, velocity.angle());
     }
 
-    public void update(float dt, Apple apple, Hero hero){
+    public void update(float dt){
         if (active){
             position.mulAdd(velocity, dt);
             if (position.x < 0 || position.x > 1280 || position.y < 0 || position.y > 720)
                 this.deactivate();
         }
+    }
 
-        if (apple.getActive()){
-            if (position.dst(apple.getPosition()) < 13){
-                hero.hitApple();
-                apple.deactivate();
-                this.deactivate();
-            }
-        }
+    public Vector2 getPosition() {
+        return position;
     }
 }

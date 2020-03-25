@@ -56,8 +56,8 @@ public class Hero {
 
     }
 
-    public void update(float dt, Apple apple){
-        projectile.update(dt, apple, this);
+    public void update(float dt){
+        projectile.update(dt);
         lifetime += dt;
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
             dst.set(Gdx.input.getX(), 720 - Gdx.input.getY());
@@ -74,5 +74,9 @@ public class Hero {
 
     public void hitApple() {
         this.countApples += 1;
+    }
+
+    public Projectile getProjectile() {
+        return projectile;
     }
 }

@@ -45,8 +45,16 @@ public class GeekRpgGame extends ApplicationAdapter {
 	}
 
 	public void update(float dt){
-		hero.update(dt, apple);
+		hero.update(dt);
 		apple.update(dt);
+
+		if (apple.getActive()){
+			if (hero.getProjectile().getPosition().dst(apple.getPosition()) < 13){
+				hero.hitApple();
+				apple.deactivate();
+				hero.getProjectile().deactivate();
+			}
+		}
 	}
 
 	public void drawGrass(){
