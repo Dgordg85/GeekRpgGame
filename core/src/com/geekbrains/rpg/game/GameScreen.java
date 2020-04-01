@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import java.util.Random;
 
 public class GameScreen extends AbstractScreen {
     private BitmapFont font32;
@@ -63,14 +64,16 @@ public class GameScreen extends AbstractScreen {
         }
     }
 
-    public void checkCollisions() {
+    public void checkCollisions(){
         for (int i = 0; i < projectilesController.getActiveList().size(); i++) {
             Projectile p = projectilesController.getActiveList().get(i);
             if (p.getPosition().dst(monster.getPosition()) < 30) {
                 p.deactivate();
-                monster.takeDamage(1);
+                if (monster.takeDamage(1) == true) {
+                    monster.setNewPos();
+                    hero.increaseCoins(new Random().nextInt(8) + 3);
+                }
             }
         }
     }
-
 }
